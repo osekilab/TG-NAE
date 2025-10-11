@@ -1,0 +1,3 @@
+[submodule "src/naturalstories"]
+	path = src/naturalstories
+	url = https://github.com/languageMIT/naturalstories.git
