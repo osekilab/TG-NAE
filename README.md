@@ -22,6 +22,19 @@ This code is tested with Python 3.7.17
     deactivate
     ```
 
+### RNNG codebase
+Only needed for the beam-search condition.
+1. Create a virtual environment:
+    ```bash
+    python -m venv .rnngenv
+    source .rnngenv/bin/activate
+    ```
+2. Install the packages:
+    ```bash
+    pip install torch==1.12.1 sentencepiece tensorboard tqdm numpy nltk
+    deactivate
+    ```
+
 ### Other procedures
 1. Create a virtual environment:
     ```bash
@@ -33,9 +46,9 @@ This code is tested with Python 3.7.17
 
 ### Data
 1. Place the training data  (BLLIP-LG) as `train.txt`, `valid.txt`, and `text.txt` in `data/bllip-lg` directory.
-2. Add the inference data (Natural Stories) as a submodule under `src/` directory:
+2. Fetch the submodules under the `src/` directory, which hold the inference data (Natural Stories) and the RNNG used for the beam-search condition:
     ```bash
-    git submodule add https://github.com/languageMIT/naturalstories.git src/naturalstories
+    git submodule update --init --recursive
     ```
 
 ## Train
@@ -65,8 +78,23 @@ This code is tested with Python 3.7.17
     bash scripts/train_txl_tree.sh
     ```
 
+### RNNG
+Only needed for the beam-search condition, where it parses Natural Stories.
+1. Preprocess:
+    ```bash
+    bash scripts/preprocess_rnng.sh
+    ```
+2. Train:
+    ```bash
+    bash scripts/train_rnng.sh
+    ```
+
 ## Compute NAE
+The NAE can be computed over the gold trees of Natural Stories, or over the
+parses that a word-synchronous beam search with the RNNG leaves in the beam at
+each word, which is the parallel parsing experiment of Appendix D.
 ### TG
+#### Gold trees
 1. Preprocess:
     ```bash
     bash scripts/preprocess_inference_tg_gold.sh
@@ -78,6 +106,20 @@ This code is tested with Python 3.7.17
 3. Postprocess:
     ```bash
     bash scripts/postprocess_inference_tg_gold.sh
+    ```
+
+#### Beam search
+1. Preprocess; parses Natural Stories with the trained RNNG:
+    ```bash
+    bash scripts/preprocess_inference_tg_bs.sh
+    ```
+2. Inference:
+    ```bash
+    bash scripts/inference_tg_bs.sh
+    ```
+3. Postprocess:
+    ```bash
+    bash scripts/postprocess_inference_tg_bs.sh
     ```
 
 ### Transformer
@@ -95,6 +137,7 @@ This code is tested with Python 3.7.17
     ```
 
 ### TG-comp
+#### Gold trees
 1. Inference:
     ```bash
     bash scripts/inference_txl_tree_gold.sh
@@ -102,6 +145,17 @@ This code is tested with Python 3.7.17
 2. Postprocess; use id/word mapping file from TG's preprocess:
     ```bash
     bash scripts/postprocess_inference_txl_tree_gold.sh
+    ```
+
+#### Beam search
+Uses the parses produced by TG's preprocess above.
+1. Inference:
+    ```bash
+    bash scripts/inference_txl_tree_bs.sh
+    ```
+2. Postprocess; use id/word mapping file from TG's preprocess:
+    ```bash
+    bash scripts/postprocess_inference_txl_tree_bs.sh
     ```
 
 ## Citation
@@ -133,3 +187,5 @@ This code is tested with Python 3.7.17
 
 ## License
 `src/syntactic_attention_based_metric_transformer_grammars/`: Apache License 2.0 (modified from [Transformer Grammars](https://github.com/google-deepmind/transformer_grammars)). See the directory's LICENSE file for details.
+
+`src/syntactic_attention_based_metric_rnng-pytorch/`: MIT License (modified from [rnng-pytorch](https://github.com/aistairc/rnng-pytorch)). See the directory's LICENSE file for details.
