@@ -158,6 +158,39 @@ Uses the parses produced by TG's preprocess above.
     bash scripts/postprocess_inference_txl_tree_bs.sh
     ```
 
+## Precomputed NAE
+The NAE values reported in the paper are included in `outputs/`, so that they can be used as predictors without re-running the training and the inference.
+
+```
+outputs/
+├── seed=0/
+├── seed=123/
+└── seed=1234/
+    ├── txl.csv            Transformer
+    ├── tg_gold.csv        TG, gold trees
+    ├── tg_bs.csv          TG, beam search
+    ├── txl_tree_gold.csv  TG-comp, gold trees
+    └── txl_tree_bs.csv    TG-comp, beam search
+```
+
+The three directories correspond to the three training seeds used in the paper. The `seed=42` that appears in the scripts is a placeholder; edit the paths in the scripts to compute the metrics under a different seed.
+
+### Columns
+Every file has one row per Natural Stories token, 10,256 rows in the same order, so the files can be joined on `id`.
+
+| Column | Description |
+| --- | --- |
+| `id` | Token id of Natural Stories, in the `story.zone` format |
+| `word` | The token itself |
+| `sum_log_prob` | Natural-log probability of the token (in nats, negative). Surprisal is `-sum_log_prob` |
+| `sum_original_metrics_nae` | NAE over the raw attention weights, summed over the attention heads |
+| `sum_projected_metrics_nae` | NAE over the attention weights reweighted by the norm of each retrieved value vector after the output projection, summed over the attention heads |
+| `sum_stack_count` | Number of elements on the stack of the incremental parse after the token. Absent from `txl.csv`, which involves no syntactic structure |
+
+Every value is summed over the subword tokens and the words that constitute one Natural Stories zone, hence the `sum_` prefix.
+
+**`sum_projected_metrics_nae` is the NAE reported in the paper**; `sum_original_metrics_nae` is not used in any of the analyses. The two correlate at r ≈ 0.97–1.00, so picking the wrong one yields results that look close to, but do not reproduce, the paper. In the beam-search files, the NAE and the stack count are averaged over the parses left in the beam, weighted by the softmax of their sequence log probabilities, whereas `sum_log_prob` is carried over from a single parse.
+
 ## Citation
 ```
 @inproceedings{yoshida-etal-2025-attention,
@@ -189,3 +222,5 @@ Uses the parses produced by TG's preprocess above.
 `src/syntactic_attention_based_metric_transformer_grammars/`: Apache License 2.0 (modified from [Transformer Grammars](https://github.com/google-deepmind/transformer_grammars)). See the directory's LICENSE file for details.
 
 `src/syntactic_attention_based_metric_rnng-pytorch/`: MIT License (modified from [rnng-pytorch](https://github.com/aistairc/rnng-pytorch)). See the directory's LICENSE file for details.
+
+`outputs/`: Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0). These files are derived from the [Natural Stories Corpus](https://github.com/languageMIT/naturalstories), which is distributed under the same license.

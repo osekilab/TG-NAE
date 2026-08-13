@@ -60,7 +60,7 @@ fi
 
 # Token compression processing
 ID_FILE="./data/naturalstories/ids/word_ids.csv"
-FINAL_OUTPUT="./outputs/seed=42/tg.csv"
+FINAL_OUTPUT="./outputs/seed=42/tg_gold.csv"
 
 if [ ! -f "$ID_FILE" ]; then
     echo "Error: ID file $ID_FILE does not exist"
