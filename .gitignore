@@ -9,6 +9,7 @@
 # Working outputs are ignored, except the released NAE predictors used in the paper
 /outputs/*
 !/outputs/.gitkeep
+!/outputs/nae_predictors.csv
 !/outputs/seed=0/
 !/outputs/seed=123/
 !/outputs/seed=1234/
