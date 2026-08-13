@@ -175,7 +175,7 @@ outputs/
 
 The three directories correspond to the three training seeds used in the paper. The `seed=42` that appears in the scripts is a placeholder; edit the paths in the scripts to compute the metrics under a different seed.
 
-`outputs/nae_predictors.csv` joins all of these files on `id` and turns the log probabilities into surprisals, so that the predictors can be read in one go. Its columns are named `{condition}_{surp,nae,stack}_seed{seed}`, plus a `_mean` column per metric holding the mean over the three seeds, taken on the raw values. The table carries the projected NAE only; read the per-condition files below for the raw attention NAE. Regenerate it with `python ./src/merge_predictors.py`.
+`outputs/nae_predictors.csv` joins all of these files on `id` and turns the log probabilities into surprisals, so that the predictors can be read in one go. Its columns are named `{condition}_{surp,nae,stack}_seed{seed}`, plus a `_mean` column per metric holding the mean over the three seeds, taken on the raw values; the likelihood ratio tests in the paper use NAE and surprisal averaged across the seeds in this way. The table carries the projected NAE only; read the per-condition files below for the raw attention NAE. Regenerate it with `python ./src/merge_predictors.py`.
 
 ### Columns
 Every file has one row per Natural Stories token, 10,256 rows in the same order, so the files can be joined on `id`.
