@@ -1,3 +1,7 @@
 [submodule "src/naturalstories"]
 	path = src/naturalstories
 	url = https://github.com/languageMIT/naturalstories.git
+[submodule "src/syntactic_attention_based_metric_rnng-pytorch"]
+	path = src/syntactic_attention_based_metric_rnng-pytorch
+	url = https://github.com/osekilab/rnng-pytorch-tgnae.git
+	branch = tg-nae
