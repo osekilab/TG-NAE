@@ -189,7 +189,7 @@ Every file has one row per Natural Stories token, 10,256 rows in the same order,
 
 Every value is summed over the subword tokens and the words that constitute one Natural Stories zone, hence the `sum_` prefix.
 
-**`sum_projected_metrics_nae` is the NAE reported in the paper**; `sum_original_metrics_nae` is not used in any of the analyses. The two correlate at r ≈ 0.97–1.00, so picking the wrong one yields results that look close to, but do not reproduce, the paper. In the beam-search files, the NAE and the stack count are averaged over the parses left in the beam, weighted by the softmax of their sequence log probabilities, whereas `sum_log_prob` is carried over from a single parse.
+**`sum_projected_metrics_nae` is the NAE reported in the paper**; `sum_original_metrics_nae` is not used in any of the analyses. The two correlate at r ≈ 0.97–1.00, so picking the wrong one yields results that look close to, but do not reproduce, the paper. In the beam-search files, the NAE and the stack count are averaged over the parses left in the beam, weighted by the softmax of their sequence log probabilities, whereas `sum_log_prob` is carried over from the highest-scoring parse in the beam rather than marginalized over it.
 
 ## Citation
 ```
