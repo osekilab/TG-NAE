@@ -55,7 +55,7 @@ Only needed for the beam-search condition.
 ### TG
 1. Preprocess:
     ```bash
-    bash scripts/preprocess_train_tg.sh
+    bash scripts/preprocess_tg.sh
     ```
 2. Train:
     ```bash
@@ -65,7 +65,7 @@ Only needed for the beam-search condition.
 ### Transformer
 1. Preprocess:
     ```bash
-    bash scripts/preprocess_train_txl.sh
+    bash scripts/preprocess_txl.sh
     ```
 2. Train:
     ```bash
