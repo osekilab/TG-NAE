@@ -185,9 +185,9 @@ Every file has one row per Natural Stories token, 10,256 rows in the same order,
 | `id` | Token id of Natural Stories, in the `story.zone` format |
 | `word` | The token itself |
 | `sum_log_prob` | Natural-log probability of the token (in nats, negative). Surprisal is `-sum_log_prob` |
-| `sum_original_metrics_nae` | NAE over the raw attention weights, summed over the attention heads |
-| `sum_projected_metrics_nae` | NAE over the attention weights reweighted by the norm of each retrieved value vector after the output projection, summed over the attention heads |
-| `sum_stack_count` | Number of elements on the stack of the incremental parse after the token. Absent from `txl.csv`, which involves no syntactic structure |
+| `sum_original_metrics_nae` | NAE over the raw attention weights, computed per head at the top layer and summed across the heads |
+| `sum_projected_metrics_nae` | NAE over the attention weights reweighted by the norm of each retrieved value vector after the output projection, computed per head at the top layer and summed across the heads |
+| `sum_stack_count` | Number of elements in the stack, comprising unclosed non-terminals, not-composed terminals, and closed phrases. Absent from `txl.csv`, which involves no syntactic structure |
 
 Every value is summed over the subword tokens and the words that constitute one Natural Stories zone, hence the `sum_` prefix.
 
