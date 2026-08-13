@@ -51,7 +51,7 @@ fi
 mkdir -p "$brackets_dir" "$charniak_dir" "$output_dir" "$tokenized_dir" "$csv_dir"
 
 echo "Step 1: Completing brackets..."
-python convert_rnng_trees.py --input "$input_file" --output_dir "$brackets_dir"
+python ./src/syntactic_attention_based_metric_transformer_grammars/convert_rnng_trees.py --input "$input_file" --output_dir "$brackets_dir"
 
 echo "Step 2: Converting to Choe-Charniak format..."
 # Create temporary file for charniak conversion tasks
@@ -67,7 +67,7 @@ for sent_dir in "$brackets_dir"/sent_*; do
             if [ -f "$pointer_file" ]; then
                 pointer_num=$(basename "$pointer_file")
                 output_file="$charniak_dir/$sent_num/$pointer_num"
-                echo "python tools/convert_to_choe_charniak.py --input \"$pointer_file\" --output \"$output_file\"" >> "$charniak_tasks"
+                echo "python ./src/syntactic_attention_based_metric_transformer_grammars/tools/convert_to_choe_charniak.py --input \"$pointer_file\" --output \"$output_file\"" >> "$charniak_tasks"
             fi
         done
     fi
@@ -91,7 +91,7 @@ for sent_dir in "$charniak_dir"/sent_*; do
             if [ -f "$pointer_file" ]; then
                 pointer_num=$(basename "$pointer_file")
                 output_file="$output_dir/$sent_num/$pointer_num"
-                echo "python remove_tail_right_bracket.py --input \"$pointer_file\" --output \"$output_file\"" >> "$removal_tasks"
+                echo "python ./src/syntactic_attention_based_metric_transformer_grammars/remove_tail_right_bracket.py --input \"$pointer_file\" --output \"$output_file\"" >> "$removal_tasks"
             fi
         done
     fi
@@ -162,7 +162,7 @@ for sent_dir in "$tokenized_dir"/sent_*; do
             if [ -f "$pointer_file" ]; then
                 pointer_num=$(basename "$pointer_file")
                 output_file="$csv_dir/$sent_num/${pointer_num%.txt}.csv"  # Change extension to .csv
-                echo "python tools/postprocess_encoded_docs.py --input \"$pointer_file\" --output \"$output_file\" --vocab \"${SPM}/spm.vocab\"" >> "$csv_tasks"
+                echo "python ./src/syntactic_attention_based_metric_transformer_grammars/tools/postprocess_encoded_docs.py --input \"$pointer_file\" --output \"$output_file\" --vocab \"${SPM}/spm.vocab\"" >> "$csv_tasks"
             fi
         done
     fi
